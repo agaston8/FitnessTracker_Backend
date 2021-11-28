@@ -100,7 +100,7 @@ describe('Database', () => {
       })
     })
   })
-  xdescribe('Routines', () => {
+  describe('Routines', () => {
     let routineToCreateAndUpdate;
     describe('getAllRoutines', () => {
       let routine;
@@ -220,7 +220,6 @@ describe('Database', () => {
         }));
       })
     })
-    //TODO assert that the activity id is 3
     describe('getPublicRoutinesByActivity', () => {
       let routine, activity;
       beforeAll(async() => {
@@ -237,6 +236,7 @@ describe('Database', () => {
           activities: expect.any(Array),
         }));
         expect(routine.isPublic).toBe(true);
+        expect(routine.activities[0].id).toBe(activity.id)
       })
       it('includes username, from users join, aliased as creatorName', async () => {
         expect(routine).toEqual(expect.objectContaining({
@@ -259,7 +259,7 @@ describe('Database', () => {
       })
     })
     //TODO use another routine from the DB, don't use routineToCreateAndUpdate.id
-    describe('updateRoutine', () => {
+    xdescribe('updateRoutine', () => {
       let queriedRoutine;
       beforeAll(async() => {
         routineToCreateAndUpdate = await updateRoutine({id: routineToCreateAndUpdate.id, isPublic: false, name: 'Arms Day', goal: 'Do all workouts that work those arms!'});
@@ -286,7 +286,7 @@ describe('Database', () => {
       
     })
     //TODO use another routine from the DB, don't use routineToCreateAndUpdate.id
-    describe('destroyRoutine', () => {
+    xdescribe('destroyRoutine', () => {
       it('removes routine from database', async () => {
         await destroyRoutine(routineToCreateAndUpdate.id);
         const {rows: [routine]} = await client.query(`
