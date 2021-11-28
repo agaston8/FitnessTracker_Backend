@@ -42,6 +42,7 @@ describe('Database', () => {
         expect(userToCreateAndUpdate.password).toBeFalsy();
       })
     })
+    //TODO => remove dependency from createUser,  seed another user in rebuildDB
     describe('getUser({ username, password })', () => {
       let verifiedUser;
       beforeAll(async () => {
@@ -57,6 +58,7 @@ describe('Database', () => {
         expect(verifiedUser.password).toBeFalsy();
       })
     })
+    //TODO => "" ""
     describe('getUserById', () => {
       it('Gets a user based on the user Id', async () => {
         const user = await getUserById(userToCreateAndUpdate.id);
@@ -83,6 +85,7 @@ describe('Database', () => {
         expect(createdActivity.description).toBe(activityToCreate.description);
       })
     })
+    //Todo => more specific query for the one to update?
     describe('updateActivity', () => {
       it('Updates name and description of an activity without affecting the ID. Returns the updated Activity.', async () => {
         const [activityToUpdate] = await getAllActivities();
@@ -91,20 +94,20 @@ describe('Database', () => {
         expect(activity).toEqual(activityToUpdate);
       })
     })
-  })
-  describe('Routines', () => {
-    let routineToCreateAndUpdate;
     describe('getActivityById', () => {
       it('gets activities by their id', async () => {
         const activity = await getActivityById(1);
         expect(activity).toBeTruthy();
       })
     })
+  })
+  describe('Routines', () => {
+    let routineToCreateAndUpdate;
     describe('getAllRoutines', () => {
       let routine;
       beforeAll(async() => {
         [routine] = await getAllRoutines();
-      })
+      }) 
       it('selects and returns an array of all routines, includes their activities', async () => {
         expect(routine).toEqual(expect.objectContaining({
           id: expect.any(Number),
@@ -218,6 +221,7 @@ describe('Database', () => {
         }));
       })
     })
+    //TODO assert that the activity id is 3
     describe('getPublicRoutinesByActivity', () => {
       let routine, activity;
       beforeAll(async() => {
@@ -255,6 +259,7 @@ describe('Database', () => {
         expect(routineToCreateAndUpdate).toEqual(queriedRoutine);
       })
     })
+    //TODO use another routine from the DB, don't use routineToCreateAndUpdate.id
     describe('updateRoutine', () => {
       let queriedRoutine;
       beforeAll(async() => {
@@ -281,6 +286,7 @@ describe('Database', () => {
       })
       
     })
+    //TODO use another routine from the DB, don't use routineToCreateAndUpdate.id
     describe('destroyRoutine', () => {
       it('removes routine from database', async () => {
         await destroyRoutine(routineToCreateAndUpdate.id);
@@ -315,6 +321,7 @@ describe('Database', () => {
         expect(routineActivityToCreateAndUpdate.duration).toBe(routineActivityData.duration);
       })
     })
+        //TODO use another routine from the DB, don't use routineToCreateAndUpdate.id
     describe('updateRoutineActivity({ id, count, duration })', () => {
       it('Finds the routine with id equal to the passed in id. Updates the count or duration as necessary.', async () => {
         const newRoutineActivityData = {id: routineActivityToCreateAndUpdate.id, count: 15, duration: 150};
@@ -324,6 +331,8 @@ describe('Database', () => {
         expect(routineActivityToCreateAndUpdate.duration).toBe(newRoutineActivityData.duration);
       })
     })
+        //TODO use another routine from the DB, don't use routineToCreateAndUpdate.id
+
     describe('destroyRoutineActivity(id)', () => {
       it('remove routine_activity from database', async () => {
         const deletedRoutine = await destroyRoutineActivity(routineActivityToCreateAndUpdate.id);
