@@ -21,6 +21,7 @@ describe('Database', () => {
   describe('Users', () => {
     let userToCreateAndUpdate, queriedUser;
     let userCredentials = {username: 'billybob', password: 'bobbybadboy'};
+    const userToQuery = {id:3, username: 'sandra', password: 'sandra123'};
     describe('createUser({ username, password })', () => {
       beforeAll(async () => {
         userToCreateAndUpdate = await createUser(userCredentials);
@@ -44,14 +45,13 @@ describe('Database', () => {
     })
     describe('getUser({ username, password })', () => {
       let verifiedUser;
-      userCredentials = {username: 'sandra', password: 'sandra123'};
       beforeAll(async () => {
-        verifiedUser = await getUser(userCredentials);
+        verifiedUser = await getUser(userToQuery);
       })
       it('Verifies the passed-in, plain-text password against the password in the database (the hashed password, if this portion is complete)', async () => {
-        const unVerifiedUser = await getUser({username: userCredentials.username, password: 'badPassword'});
+        const unVerifiedUser = await getUser({username: userToQuery.username, password: 'badPassword'});
         expect(verifiedUser).toBeTruthy();
-        expect(verifiedUser.username).toBe(userCredentials.username);
+        expect(verifiedUser.username).toBe(userToQuery.username);
         expect(unVerifiedUser).toBeFalsy();
       })
       it('Does NOT return the password', async () => {
@@ -59,11 +59,10 @@ describe('Database', () => {
       })
     })
     describe('getUserById', () => {
-      userToCreateAndUpdate = {id:3, username: 'sandra', password: 'sandra123'};
       it('Gets a user based on the user Id', async () => {
-        const user = await getUserById(userToCreateAndUpdate.id);
+        const user = await getUserById(userToQuery.id);
         expect(user).toBeTruthy();
-        expect(user.id).toBe(userToCreateAndUpdate.id);
+        expect(user.id).toBe(userToQuery.id);
       })
     })
   })
