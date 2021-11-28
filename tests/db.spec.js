@@ -42,9 +42,9 @@ describe('Database', () => {
         expect(userToCreateAndUpdate.password).toBeFalsy();
       })
     })
-    //TODO => remove dependency from createUser,  seed another user in rebuildDB
     describe('getUser({ username, password })', () => {
       let verifiedUser;
+      userCredentials = {username: 'sandra', password: 'sandra123'};
       beforeAll(async () => {
         verifiedUser = await getUser(userCredentials);
       })
@@ -58,8 +58,8 @@ describe('Database', () => {
         expect(verifiedUser.password).toBeFalsy();
       })
     })
-    //TODO => "" ""
     describe('getUserById', () => {
+      userToCreateAndUpdate = {id:3, username: 'sandra', password: 'sandra123'};
       it('Gets a user based on the user Id', async () => {
         const user = await getUserById(userToCreateAndUpdate.id);
         expect(user).toBeTruthy();
@@ -67,7 +67,7 @@ describe('Database', () => {
       })
     })
   })
-  describe('Activities', () => {
+  xdescribe('Activities', () => {
     describe('getAllActivities', () => {
       it('selects and returns an array of all activities', async () => {
         const activities = await getAllActivities();
@@ -101,7 +101,7 @@ describe('Database', () => {
       })
     })
   })
-  describe('Routines', () => {
+  xdescribe('Routines', () => {
     let routineToCreateAndUpdate;
     describe('getAllRoutines', () => {
       let routine;
@@ -303,7 +303,7 @@ describe('Database', () => {
       })
     })
   })
-  describe('Routine Activities', () => {
+  xdescribe('Routine Activities', () => {
     const routineActivityData = {
       routineId: 4,
       activityId: 8,
