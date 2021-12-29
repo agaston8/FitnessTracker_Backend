@@ -66,7 +66,7 @@ describe('Database', () => {
       })
     })
   })
-  xdescribe('Activities', () => {
+  describe('Activities', () => {
     describe('getAllActivities', () => {
       it('selects and returns an array of all activities', async () => {
         const activities = await getAllActivities();
@@ -101,7 +101,8 @@ describe('Database', () => {
     })
   })
   describe('Routines', () => {
-    let routineToCreateAndUpdate;
+    let routineToCreate;
+    let routineToUpdate;
     describe('getAllRoutines', () => {
       let routine;
       beforeAll(async() => {
@@ -253,51 +254,54 @@ describe('Database', () => {
     })
     describe('createRoutine', () => {
       it('creates and returns the new routine', async () => {
-        routineToCreateAndUpdate = await createRoutine({creatorId: 2, isPublic: true, name: 'BodyWeight Day', goal: 'Do workouts that can be done from home, no gym or weights required.'});
-        const queriedRoutine = await getRoutineById(routineToCreateAndUpdate.id)
-        expect(routineToCreateAndUpdate).toEqual(queriedRoutine);
+        routineToCreate = await createRoutine({creatorId: 2, isPublic: true, name: 'BodyWeight Day', goal: 'Do workouts that can be done from home, no gym or weights required.'});
+        const queriedRoutine = await getRoutineById(routineToCreate.id)
+        expect(routineToCreate).toEqual(queriedRoutine);
       })
     })
-    //TODO use another routine from the DB, don't use routineToCreateAndUpdate.id
-    xdescribe('updateRoutine', () => {
+    describe('updateRoutine', () => {
       let queriedRoutine;
       beforeAll(async() => {
-        routineToCreateAndUpdate = await updateRoutine({id: routineToCreateAndUpdate.id, isPublic: false, name: 'Arms Day', goal: 'Do all workouts that work those arms!'});
-        queriedRoutine = await getRoutineById(routineToCreateAndUpdate.id);
+        routineToUpdate = await updateRoutine({id: 1, isPublic: false, name: 'Arms Day', goal: 'Do all workouts that work those arms!'});
+        queriedRoutine = await getRoutineById(routineToUpdate.id);
       })
       it('Returns the updated routine', async () => {
-        expect(routineToCreateAndUpdate).toBeTruthy();
+        expect(routineToUpdate).toBeTruthy();
       })
       it('Finds the routine with id equal to the passed in id. Does not update the routine id.', async () => {
-        expect(routineToCreateAndUpdate.id).toBe(queriedRoutine.id);
+        expect(routineToUpdate.id).toBe(queriedRoutine.id);
       })
       it('Updates the public status, name, or goal, as necessary', async () => {
-        expect(routineToCreateAndUpdate.isPublic).toBe(queriedRoutine.isPublic);
-        expect(routineToCreateAndUpdate.name).toBe(queriedRoutine.name);
-        expect(routineToCreateAndUpdate.goal).toBe(queriedRoutine.goal);
+        expect(routineToUpdate.isPublic).toBe(queriedRoutine.isPublic);
+        expect(routineToUpdate.name).toBe(queriedRoutine.name);
+        expect(routineToUpdate.goal).toBe(queriedRoutine.goal);
       })
       it('Does not update fields that are not passed in', async () => {
         const name = 'Abs Day';
-        routineToCreateAndUpdate = await updateRoutine({id: routineToCreateAndUpdate.id, name, goal: 'Do all workouts that work those arms!'});
-        expect(routineToCreateAndUpdate.isPublic).toBe(queriedRoutine.isPublic);
-        expect(routineToCreateAndUpdate.name).toBe(name);
-        expect(routineToCreateAndUpdate.goal).toBe(queriedRoutine.goal);
+        routineToUpdate = await updateRoutine({id: routineToUpdate.id, name, goal: 'Do all workouts that work those arms!'});
+        expect(routineToUpdate.isPublic).toBe(queriedRoutine.isPublic);
+        expect(routineToUpdate.name).toBe(name);
+        expect(routineToUpdate.goal).toBe(queriedRoutine.goal);
       })
       
     })
     //TODO use another routine from the DB, don't use routineToCreateAndUpdate.id
-    xdescribe('destroyRoutine', () => {
+    describe('destroyRoutine', () => {
+      let routineToDestroy;
+      beforeAll(async() => {
+        routineToDestroy = await getRoutineById(2);
+      })
       it('removes routine from database', async () => {
-        await destroyRoutine(routineToCreateAndUpdate.id);
+        await destroyRoutine(routineToDestroy.id);
         const {rows: [routine]} = await client.query(`
           SELECT * 
           FROM routines
           WHERE id = $1;
-        `, [routineToCreateAndUpdate.id]);
+        `, [routineToDestroy.id]);
         expect(routine).toBeFalsy();
       })
       it('Deletes all the routine_activities whose routine is the one being deleted.', async () => {
-        const queriedRoutineActivities = await getRoutineActivitiesByRoutine(routineToCreateAndUpdate)
+        const queriedRoutineActivities = await getRoutineActivitiesByRoutine(routineToDestroy)
         expect(queriedRoutineActivities.length).toBe(0);
       })
     })
