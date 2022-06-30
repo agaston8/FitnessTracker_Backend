@@ -8,3 +8,6 @@ const client = new Pool({
 });
 
 module.exports = client;
+
+
+//build and export unconnected client (import this into individual files as we  move along)
