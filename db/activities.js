@@ -82,8 +82,6 @@ async function createActivity({ name, description }) {
 async function updateActivity({ id, ...fields }) {
  // console.log("these are the fields", {id, ...fields})
   const field = {...fields};
- // console.log(field)
- // console.log(id);
   
   if (field.description) {
     let fieldD = field.description

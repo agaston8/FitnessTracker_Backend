@@ -52,6 +52,7 @@ async function getAllRoutines() {
         INNER JOIN activities
         ON routine_activities."activityId" = activities.id;
     `)
+    //console.log(routineActivities)
 
      routinesWithUser.map ((routine1)=> {
          routineActivities.map((routine2)=> {
@@ -100,7 +101,7 @@ async function getPublicRoutinesByUser({username}) {
           return true
         }
     });
-    console.log("PUBLIC USER ROUTE", publicUserRoutines)
+    //console.log("PUBLIC USER ROUTE", publicUserRoutines)
     return publicUserRoutines
 
   } catch(error) {
@@ -136,7 +137,7 @@ async function getPublicRoutinesByActivity({id}) {
           if (routine.activities.length > -1) {
             let activities = routine.activities
             activities.map((activity)=>{
-              console.log(activity);
+              //console.log(activity);
               if (activity.id === id) {
                 publicRoutinesByActivity.push(routine);
               }
@@ -144,7 +145,7 @@ async function getPublicRoutinesByActivity({id}) {
           }
         })
 
-        console.log("PUBLIC ROUTINES BY ACTIVITY", publicRoutinesByActivity)
+        //console.log("PUBLIC ROUTINES BY ACTIVITY", publicRoutinesByActivity)
        return publicRoutinesByActivity
 
     } catch(error) {
@@ -175,23 +176,23 @@ async function createRoutine({creatorId, isPublic, name, goal}) {
 }
 
 async function updateRoutine({id, ...fields}) {
-  console.log("FIELDS", fields)
+  //console.log("FIELDS", fields)
   const {isPublic, name, goal} = fields
 
-  const fieldValues = [];
+  const fieldItem = [];
 
   if ('isPublic' in fields) {
-    fieldValues.push(`"isPublic"=${isPublic}`)
+    fieldItem.push(`"isPublic"=${isPublic}`)
   } 
   if('name' in fields) {
-    fieldValues.push(`name='${name}'`)
+    fieldItem.push(`name='${name}'`)
   }
   if ('goal' in fields){
-    fieldValues.push(`goal='${goal}'`)
+    fieldItem.push(`goal='${goal}'`)
   }
 
-  const insertedValues = fieldValues.join(', ');
-  console.log(insertedValues)
+  const insertedValues = fieldItem.join(', ');
+  //console.log(insertedValues)
 
     try {
       const {rows: [routine]} = await client.query(`
@@ -208,7 +209,7 @@ async function updateRoutine({id, ...fields}) {
 }
 
 async function destroyRoutine(id) {
-  console.log(id);
+  //console.log(id);
   try{
     await client.query(`
         DELETE FROM routine_activities
