@@ -1,17 +1,21 @@
-const res = require("express/lib/response");
+
 const client = require("./client");
+const bcrypt = require('../node_modules/bcrypt');
+const SALT = 10;
 
 // database functions
 
 // user functions
 async function createUser({ username, password }) {
+  const hashedPassword=await bcrypt.hash(password, SALT);
+
     try {
       const {rows:[user]} = await client.query(`
         INSERT INTO users(username, password)
         VALUES ($1, $2)
         ON CONFLICT (username) DO NOTHING
         RETURNING *
-      `, [username, password])
+      `, [username, hashedPassword])
 
       delete user.password;
 
@@ -25,17 +29,18 @@ async function createUser({ username, password }) {
 }
 
 async function getUser({ username, password }) {
-  try{
+  try {
     const user = await getUserByUsername(username);
-    
+    console.log("LOOOOK", user)
+    if (!user) {return;}
+    const hashedPassword = user.password;
+    const passwordMatch = await bcrypt.compare(password, hashedPassword);
+    if (!passwordMatch) {return;}
     delete user.password;
-
-    //console.log("Getting the user", user)
-    return user
-
-  } catch(error) {
-    console.error("Error getting User");
-    throw error
+    console.log("LOOK", user)
+    return user;
+    } catch (error) {
+    console.error(error);
   }
 
 }
@@ -63,6 +68,16 @@ async function getUserById(userId) {
 }
 
 async function getUserByUsername(userName) {
+  try {
+    const {rows: [user]} = await client.query(`
+        SELECT *
+        FROM users
+        WHERE username = ($1);
+        `, [userName]);
+    return user;
+  } catch (error) {
+    console.error(error);
+  }
 
 }
 
