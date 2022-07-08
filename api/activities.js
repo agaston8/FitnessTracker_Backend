@@ -21,9 +21,6 @@ activitiesRouter.get("/", async (req, res, next) => {
 
 
 // GET /api/activities/:activityId/routines
-// ✕ Get a list of all public routines which feature that activity (148 ms)
-// ✕ Should return an error when you ask for an activity that does not exist (2 ms)
-
 activitiesRouter.get("/:activityId/routines", async (req, res, next)=>{
     const {activityId} = req.params;
     //console.log("ID", activityId)

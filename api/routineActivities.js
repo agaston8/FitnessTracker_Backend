@@ -7,8 +7,7 @@ const {
 } = require("../db")
 
 // PATCH /api/routine_activities/:routineActivityId
-// ✕ Updates the count or duration on the routine activity (193 ms)
-// ✕ should return an error if the owner of the routine isn't the one trying to edit it (235 ms)
+
 routineActivitiesRouter.patch("/:routineActivityId", async (req, res, next)=>{
     const {routineActivityId} = req.params;
     const {count, duration} = req.body;

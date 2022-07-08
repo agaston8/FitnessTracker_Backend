@@ -221,7 +221,7 @@ async function updateRoutine({id, ...fields}) {
 }
 
 async function destroyRoutine(id) {
-  console.log("ID!", id);
+  //console.log("ID!", id);
   try{
    const {rows} = await client.query(`
         DELETE FROM routine_activities

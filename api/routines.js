@@ -38,9 +38,6 @@ routinesRouter.post('/', async (req, res, next)=>{
     
 })
 // PATCH /api/routines/:routineId
-// ✕ Updates a routine, notably changing public/private, the name, and the goal (5003 ms)
-//       ✕ Requires logged in user (5002 ms)
-//       ✕ returns a 403 when a user tries to edit a routine that is not theirs (5002 ms)
 routinesRouter.patch('/:routineId', async (req, res, next)=>{
     const {routineId} = req.params;
     const {isPublic, name, goal} = req.body;
@@ -61,7 +58,6 @@ routinesRouter.patch('/:routineId', async (req, res, next)=>{
 
 // DELETE /api/routines/:routineId
 
-// Hard delete a routine. Make sure to delete all the routineActivities whose routine is the one being deleted.
 routinesRouter.delete('/:routineId', async (req, res, next)=>{
     const {routineId} = req.params;
     try{
@@ -71,8 +67,8 @@ routinesRouter.delete('/:routineId', async (req, res, next)=>{
             const deletedRoutine = await destroyRoutine(routineId);
             const deletedR = await getRoutineById(routineId)
 
-            console.log("deleted", deletedR)
-            console.log(deletedRoutine)
+           //console.log("deleted", deletedR)
+            //console.log(deletedRoutine)
             res.send(deletedRoutine);
         // } else {
         //     next({
@@ -90,7 +86,6 @@ routinesRouter.delete('/:routineId', async (req, res, next)=>{
 })
 
 // POST /api/routines/:routineId/activities
-// Attach a single activity to a routine. Prevent duplication on (routineId, activityId) pair.
 routinesRouter.post('/:routineId/activities', async (req, res, next)=>{
        const {routineId} = req.params;
         //need to write attach ativity to routine
