@@ -23,8 +23,8 @@ async function getActivityById(id) {
     const {rows:[activity]} = await client.query(`
       SELECT * 
       FROM activities
-      WHERE id=${id};
-    `)
+      WHERE id=$1;
+    `,[id])
 
     return activity;
 
@@ -65,7 +65,6 @@ async function createActivity({ name, description }) {
     const {rows: [activity]} = await client.query(`
       INSERT INTO activities(name, description)
       VALUES ($1, $2)
-      ON CONFLICT (name) DO NOTHING
       RETURNING *;
     `, [name, description]);
 
@@ -73,8 +72,8 @@ async function createActivity({ name, description }) {
     return activity;
 
   }catch(error) {
-    console.error("Error creating activity");
-    throw error
+    
+    return error;
   }
 }
 

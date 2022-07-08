@@ -9,7 +9,7 @@ async function getRoutineActivityById(id){
     FROM routine_activities
     WHERE id = ${id};
     `);
-
+    //console.log(routine)
     return routine;
   } catch (error) {
     console.error(error);
@@ -95,7 +95,6 @@ async function canEditRoutineActivity(routineActivityId, userId) {
       } else {
       return false
       }
-
  }
 
 module.exports = {

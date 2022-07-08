@@ -129,29 +129,39 @@ async function getAllPublicRoutines() {
 
 }
 
+
+
+//THIS STILL NEEDS HELP
 async function getPublicRoutinesByActivity({id}) {
-    try{
-        const allPublicRoutines = await getAllPublicRoutines();
-        const publicRoutinesByActivity = [];
-        allPublicRoutines.map((routine) => {
-          if (routine.activities.length > -1) {
-            let activities = routine.activities
-            activities.map((activity)=>{
-              //console.log(activity);
-              if (activity.id === id) {
-                publicRoutinesByActivity.push(routine);
-              }
-            })
-          }
-        })
+  try{
+      const allPublicRoutines = await getAllPublicRoutines();
+      const publicRoutinesByActivity = [];
+      allPublicRoutines.map((routine) => {
+        if (routine.activities.length > -1) {
+          let activities = routine.activities
+          activities.map((activity)=>{
+            //console.log(activity);
+            if (activity.id == id) {
+              publicRoutinesByActivity.push(routine);
+            }
+          })
+        }
+      })
 
-        //console.log("PUBLIC ROUTINES BY ACTIVITY", publicRoutinesByActivity)
-       return publicRoutinesByActivity
+      //console.log("DB side, PUBLIC ROUTINES BY ACTIVITY", publicRoutinesByActivity)
+      if (publicRoutinesByActivity.length > 0) {
+        return publicRoutinesByActivity
+      } else {
+        throw{
+          name:"error",
+          message:`Activity ${id} not found`,
+          error: "error"
+        }
+      }
 
-    } catch(error) {
-      console.error("Error getting public routines by activity");
-      throw error
-    }
+  } catch(error) {
+    return error;
+  }
 
 }
 
@@ -177,6 +187,8 @@ async function createRoutine({creatorId, isPublic, name, goal}) {
 
 async function updateRoutine({id, ...fields}) {
   //console.log("FIELDS", fields)
+  //console.log("ID", id)
+ // console.log("WHAT THE DB IS SEEING", {id, ...fields})
   const {isPublic, name, goal} = fields
 
   const fieldItem = [];
@@ -209,16 +221,16 @@ async function updateRoutine({id, ...fields}) {
 }
 
 async function destroyRoutine(id) {
-  //console.log(id);
+  console.log("ID!", id);
   try{
-    await client.query(`
+   const {rows} = await client.query(`
         DELETE FROM routine_activities
         WHERE "routineId" = ${id};
 
         DELETE FROM routines
         WHERE id = ${id};
     `);
-
+    return rows;
   }catch(error){
     console.error("Error deleting routine");
     throw error

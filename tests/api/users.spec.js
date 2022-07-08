@@ -58,7 +58,7 @@ describe("/api/users", () => {
           username: fakeUserData.username,
         },
       })
-    })
+    });
 
     it("EXTRA CREDIT: Hashes password before saving user to DB.", async () => {
       // Create some fake user data

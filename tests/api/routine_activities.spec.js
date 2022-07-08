@@ -28,6 +28,7 @@ describe("/api/routine_activities", () => {
   describe("PATCH /api/routine_activities/:routineActivityId (**)", () => {
     it("Updates the count or duration on the routine activity", async () => {
       const { fakeUser, token } = await createFakeUserWithToken("Smith")
+      console.log("FAKE", fakeUser.id)
       const fakeRoutine = await createFakePublicRoutine(
         fakeUser.id,
         "On Saturday",
@@ -59,6 +60,7 @@ describe("/api/routine_activities", () => {
 
     it("should return an error if the owner of the routine isn't the one trying to edit it", async () => {
       const { fakeUser } = await createFakeUserWithToken("Lauren")
+      console.log("fake2", fakeUser.id)
 
       const fakeRoutine = await createFakePublicRoutine(
         fakeUser.id,
@@ -99,6 +101,7 @@ describe("/api/routine_activities", () => {
   describe("DELETE /api/routine_activities/:routineActivityId (**)", () => {
     it("Removes an activity from a routine, uses hard delete", async () => {
       const { fakeUser, token } = await createFakeUserWithToken("Linus")
+      //console.log("yo1", fakeUser.id)
       const fakeRoutine = await createFakePublicRoutine(
         fakeUser.id,
         "In the morning",
@@ -124,7 +127,7 @@ describe("/api/routine_activities", () => {
 
     it("Logged in user should be the owner of the modified object.", async () => {
       const { fakeUser } = await createFakeUserWithToken("Lucy")
-
+      //console.log("yo2", fakeUser.id)
       const fakeRoutine = await createFakePublicRoutine(
         fakeUser.id,
         "In the afternoon",

@@ -1,10 +1,39 @@
 // require in the database adapter functions as you write them (createUser, createActivity...)
 // const { } = require('./');
-const client = require("./client")
-const { createUser } = require("./users.js")
-const {createActivity, getAllActivities} = require("./activities")
-const {createRoutine, getRoutinesWithoutActivities} = require("./routines")
-const {addActivityToRoutine} = require("./routine_activities")
+// const client = require("./client")
+// const { createUser } = require("./users.js")
+// const {createActivity, getAllActivities} = require("./activities")
+// const {createRoutine, getRoutinesWithoutActivities} = require("./routines")
+// const {addActivityToRoutine} = require("./routine_activities")
+const {
+  client,
+  getAllActivities,
+  getActivityById,
+  getActivityByName,
+  attachActivitiesToRoutines,
+  createActivity,
+  updateActivity,
+  getRoutineActivityById,
+  addActivityToRoutine,
+  getRoutineActivitiesByRoutine,
+  updateRoutineActivity,
+  destroyRoutineActivity,
+  canEditRoutineActivity,
+  getRoutineById,
+  getRoutinesWithoutActivities,
+  getAllRoutines,
+  getAllPublicRoutines,
+  getAllRoutinesByUser,
+  getPublicRoutinesByUser,
+  getPublicRoutinesByActivity,
+  createRoutine,
+  updateRoutine,
+  destroyRoutine,
+  createUser,
+  getUser,
+  getUserById,
+  getUserByUsername,
+} = require("./")
 
 async function dropTables() {
   console.log("Dropping All Tables...")
@@ -62,14 +91,6 @@ async function createTables() {
     throw error;
   }
 }
-
-// CREATE TABLE routine_activities (
-//   id SERIAL PRIMARY KEY,
-//   "routineId" INTEGER UNIQUE REFERENCES routines(id) NOT NULL,
-//   "activityId" INTEGER UNIQUE REFERENCES activities(id) NOT NULL,
-//   duration INTEGER,
-//   count INTEGER
-// );
 
 /* 
 DO NOT CHANGE ANYTHING BELOW. This is default seed data, and will help you start testing, before getting to the tests. 

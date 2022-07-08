@@ -11,4 +11,6 @@ server.listen(PORT, () => {
     chalk.yellow(PORT),
     chalk.blueBright("Get your routine on!")
   )
-})
+});
+
+module.exports = PORT;
