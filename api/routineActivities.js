@@ -4,7 +4,6 @@ const {
     updateRoutineActivity,
     destroyRoutineActivity,
     canEditRoutineActivity,
-    getUserById
 } = require("../db")
 const jwt = require('jsonwebtoken')
 
