@@ -50,7 +50,7 @@ userRouter.post('/login', async (req, res, next) => {
 })
 
 
-userRouter.post('/register', async (req, res, next) => {
+userRouter.post('/register', async (req, res) => {
     const {username, password} = req.body;
 
     try{
@@ -90,7 +90,7 @@ userRouter.post('/register', async (req, res, next) => {
 
 
 // GET /api/users/me
-userRouter.get('/me', async (req, res, next) => {
+userRouter.get('/me', async (req, res) => {
     
     const prefix = 'Bearer ';
     const auth = req.header('Authorization');

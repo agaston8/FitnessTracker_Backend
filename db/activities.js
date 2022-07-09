@@ -80,38 +80,29 @@ async function createActivity({ name, description }) {
 // return the new activity
 async function updateActivity({ id, ...fields }) {
  // console.log("these are the fields", {id, ...fields})
-  const field = {...fields};
-  
+  const field= {...fields};
+  let fieldItem =[];
+  console.log(field)
+
   if (field.description) {
-    let fieldD = field.description
+    fieldItem.push(`description='${field.description}'`)
+  }
+  if (field.name) {
+    fieldItem.push(`name='${field.name}'`)
+  }
+
+  const insertedValues = fieldItem.join(', ');
+  console.log(insertedValues)
     
       try{
         const {rows:[newActivity]} = await client.query(`
             UPDATE activities
-            SET description=$1
+            SET ${insertedValues}
             WHERE id=${id}
             RETURNING *
-        ;`, [fieldD])
+        ;`)
 
         return newActivity
-
-      } catch(error) {
-        console.error("Error updating activities");
-        throw error
-      }
-  } 
-
-  if (field.name) {
-    let fieldN = field.name
-    try{
-      const {rows:[newActivity]} = await client.query(`
-          UPDATE activities
-          SET name=$1
-          WHERE id=$2
-          RETURNING *
-        ;`, [fieldN, id])
-
-      return newActivity
 
     } catch(error) {
       console.error("Error updating activities");
@@ -119,7 +110,6 @@ async function updateActivity({ id, ...fields }) {
     }
   }
 
-}
 
 module.exports = {
   getAllActivities,

@@ -87,23 +87,20 @@ activitiesRouter.post('/', async (req, res, next) => {
    
 })
 
+
+
 // PATCH /api/activities/:activityId
 activitiesRouter.patch('/:activityId', async (req, res, next)=>{
     const {activityId} = req.params;
+    console.log(activityId)
     const {name, description} = req.body;
-    const fields ={};
-    if (name) {
-        fields.name=name;
-    }
-    if (description) {
-        fields.description=description;
-    }
-    //figure out where to get fields
-    //errors
+    console.log(req.body)
 
     try{
         const existingActivity = await getActivityById(activityId);
+        console.log(existingActivity)
         const activityWithName = await getActivityByName(name);
+        console.log(activityWithName)
         if(!existingActivity){
             res.send({
                 name:"Error",
@@ -117,7 +114,10 @@ activitiesRouter.patch('/:activityId', async (req, res, next)=>{
                 error:"Error"
             })
         } else {
+            console.log('here')
+            console.log(name)
             const updatedActivity = await updateActivity({id: activityId, name:name, description:description});
+            console.log("updatedactivity", updatedActivity)
             res.send(updatedActivity);
             
         }

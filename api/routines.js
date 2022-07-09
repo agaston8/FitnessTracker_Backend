@@ -12,7 +12,7 @@ const {
   const jwt = require('jsonwebtoken');
 
 // GET /api/routines
-routinesRouter.get('/', async (req, res, next)=>{
+routinesRouter.get('/', async (req, res)=>{
     try{
         const routines = await getAllRoutines();
          res.send(routines);
@@ -22,7 +22,7 @@ routinesRouter.get('/', async (req, res, next)=>{
 })
 
 // POST /api/routines
-routinesRouter.post('/', async (req, res, next) => {
+routinesRouter.post('/', async (req, res) => {
     const {name, goal, isPublic} =req.body
     try {
         const token = (req.headers.authorization && (req.headers.authorization).slice(7, (req.headers.authorization).length));
@@ -81,7 +81,7 @@ try {
 
 // DELETE /api/routines/:routineId
 
-routinesRouter.delete('/:routineId', async (req, res, next)=>{
+routinesRouter.delete('/:routineId', async (req, res)=>{
     const {routineId} = req.params;
     try{
         const prefix = 'Bearer ';
@@ -115,7 +115,7 @@ routinesRouter.delete('/:routineId', async (req, res, next)=>{
 })
 
 // POST /api/routines/:routineId/activities
-routinesRouter.post('/:routineId/activities', async (req, res, next)=>{
+routinesRouter.post('/:routineId/activities', async (req, res)=>{
     const {routineId, activityId, count, duration} =req.body
     try {
         const updatedRoutine = await addActivityToRoutine({routineId:routineId, activityId:activityId, count:count, duration:duration});
