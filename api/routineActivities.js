@@ -5,6 +5,7 @@ const {
     destroyRoutineActivity,
     canEditRoutineActivity,
 } = require("../db")
+const jwt = require('jsonwebtoken')
 
 // PATCH /api/routine_activities/:routineActivityId
 

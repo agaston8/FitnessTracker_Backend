@@ -7,6 +7,7 @@ const{ getAllActivities,
     getActivityByName,
     getActivityById
 } = require("../db");
+const jwt = require('jsonwebtoken')
 
 // GET /api/activities
 activitiesRouter.get("/", async (req, res, next) => {

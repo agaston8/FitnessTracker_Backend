@@ -8,6 +8,7 @@ const {
   updateRoutine,
   getRoutineById
   } = require("../db");
+  const jwt = require('jsonwebtoken')
 
 // GET /api/routines
 routinesRouter.get('/', async (req, res, next)=>{
