@@ -52,13 +52,12 @@ async function getAllRoutines() {
         INNER JOIN activities
         ON routine_activities."activityId" = activities.id;
     `)
-    //console.log(routineActivities)
+    //console.log("routienActivities", routineActivities)
 
      routinesWithUser.map ((routine1)=> {
          routineActivities.map((routine2)=> {
             if (routine2.routineId === routine1.id) {
-                    let activityArray = routine1.activities;
-                    activityArray.push(routine2);
+                    routine1.activities.push(routine2);
             } 
 
        })

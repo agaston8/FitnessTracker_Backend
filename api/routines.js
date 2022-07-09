@@ -6,91 +6,127 @@ const {
   createRoutine,
   destroyRoutine,
   updateRoutine,
-  getRoutineById
+  getRoutineById,
+  addActivityToRoutine
   } = require("../db");
-  const jwt = require('jsonwebtoken')
+  const jwt = require('jsonwebtoken');
 
 // GET /api/routines
 routinesRouter.get('/', async (req, res, next)=>{
-
     try{
         const routines = await getAllRoutines();
-       // console.log(routines)
          res.send(routines);
-
     } catch(error) {
         console.error(error)
     }
-
 })
 
 // POST /api/routines
-routinesRouter.post('/', async (req, res, next)=>{
-//    // creatorId, isPublic, name, goal
-//    const { creatorId, isPublic, name, goal} = req.body;
-//   // console.log(creatorId, isPublic, "n", name, "g", goal)
-//    try{
-//         const newRoutine = await createRoutine(creatorId, isPublic, name, goal);
-//         res.send(newRoutine);
-//    } catch(error) {
-//        console.error(error)
-//    }
-
+routinesRouter.post('/', async (req, res, next) => {
+    const {name, goal, isPublic} =req.body
+    try {
+        const token = (req.headers.authorization && (req.headers.authorization).slice(7, (req.headers.authorization).length));
+        const loggedInUser = jwt.verify(token, process.env.JWT_SECRET)
+        if (loggedInUser) {
+            const newRoutine = await createRoutine({creatorId: loggedInUser.id, isPublic: isPublic, name: name, goal: goal})
+            res.send(newRoutine)
+         } 
+    } catch (error) {
+        res.send({
+            error: "error",
+            message: "You must be logged in to perform this action",
+            name: "name"
+        });
+    }
+});
     
-})
+
 // PATCH /api/routines/:routineId
 routinesRouter.patch('/:routineId', async (req, res, next)=>{
-    const {routineId} = req.params;
-    const {isPublic, name, goal} = req.body;
     
-    try{
-        const updatedRoutine = await updateRoutine({id:routineId, isPublic: isPublic, name:name, goal:goal});
-       // console.log(updatedRoutine)
+try {
+    const token = (req.headers.authorization && (req.headers.authorization).slice(7, (req.headers.authorization).length));
+    const loggedInUser = jwt.verify(token, process.env.JWT_SECRET);
 
-        res.send(updatedRoutine) 
-
-
-    } catch(error){
-        console.error(error)
-    }
-  
-    
-})
+    if (loggedInUser.id) {
+        const {routineId} = req.params;
+        const {isPublic, name, goal} = req.body
+        const routine = await getRoutineById(routineId)
+        
+        if (routine.creatorId === loggedInUser.id) {
+            try {
+                const updatedRoutine = await updateRoutine({id: routineId, isPublic: isPublic,name: name, goal: goal})
+                res.send(updatedRoutine)
+            } catch (error) {
+                next(error)
+            }
+        } else {
+            res.status = 403
+            res.body = {
+                error: "error",
+                message: `User ${loggedInUser.username} is not allowed to update ${routine.name}`,
+                name: "name"
+            }
+            res.send(res.status, res.body);
+        }
+    } 
+} catch (error) {
+    res.send({
+        error: "error",
+        message: "You must be logged in to perform this action",
+        name: "name",
+    });
+}
+});
 
 // DELETE /api/routines/:routineId
 
 routinesRouter.delete('/:routineId', async (req, res, next)=>{
     const {routineId} = req.params;
     try{
-        // if (routine.creatorId === req.user.id) {
-            //const notdeletedR = await getRoutineById(routineId);
-            //console.log("not deleted yet", notdeletedR)
-            const deletedRoutine = await destroyRoutine(routineId);
-            const deletedR = await getRoutineById(routineId)
-
-           //console.log("deleted", deletedR)
-            //console.log(deletedRoutine)
-            res.send(deletedRoutine);
-        // } else {
-        //     next({
-        //         //throw a 403 error here
-        //         name:"ERROR",
-        //         message:"",
-        //         error:"ERROR"
-        //     })
-        // }
+        const prefix = 'Bearer ';
+        const auth = req.header('Authorization');
+        const token = auth.slice(prefix.length);
+        const loggedInUser = jwt.verify(token, process.env.JWT_SECRET);
+        const routine = await getRoutineById(routineId);
+        //console.log(routine)
+          try{  
+            if (loggedInUser.id === routine.creatorId) {
+                res.send(routine)
+                //const deletedRoutine = 
+                await destroyRoutine(routineId);
+                //console.log("THIS SOULD BE DELETED", deletedRoutine)
+                //res.send(deletedRoutine)
+            } else {
+                res.status(403).send({
+                    error: "error",
+                    message: `User ${loggedInUser.username} is not allowed to delete On even days`,
+                    name: "error",
+                }) 
+            }
+          } catch(error){
+              console.error(error)
+          }
+       
+         
     } catch(error){
         console.error(error)
     }
-   
-    
 })
 
 // POST /api/routines/:routineId/activities
 routinesRouter.post('/:routineId/activities', async (req, res, next)=>{
-       const {routineId} = req.params;
-        //need to write attach ativity to routine
-    
+    const {routineId, activityId, count, duration} =req.body
+    try {
+        const updatedRoutine = await addActivityToRoutine({routineId:routineId, activityId:activityId, count:count, duration:duration});
+        res.send(updatedRoutine)
+    } catch (error) {
+        res.send({
+            error: "error",
+            message: `Activity ID ${activityId} already exists in Routine ID ${routineId}`,
+            name: "name"
+        });
+    }
 })
 
 module.exports = routinesRouter;
