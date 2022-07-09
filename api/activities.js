@@ -7,7 +7,7 @@ const{ getAllActivities,
     getActivityByName,
     getActivityById
 } = require("../db");
-const jwt = require('jsonwebtoken')
+
 
 // GET /api/activities
 activitiesRouter.get("/", async (req, res, next) => {
@@ -22,7 +22,7 @@ activitiesRouter.get("/", async (req, res, next) => {
 
 
 // GET /api/activities/:activityId/routines
-activitiesRouter.get("/:activityId/routines", async (req, res, next)=>{
+activitiesRouter.get("/:activityId/routines", async (req, res)=>{
     const {activityId} = req.params;
     //console.log("ID", activityId)
     
@@ -50,11 +50,7 @@ activitiesRouter.get("/:activityId/routines", async (req, res, next)=>{
 // POST /api/activities
 
 activitiesRouter.post('/', async (req, res, next) => {
-    // const {name, description} = req.body
-    // const fields ={
-    //     name:name,
-    //     description:description
-    // }
+    
     try {
         const activity = await createActivity(req.body);
         
@@ -70,27 +66,11 @@ activitiesRouter.post('/', async (req, res, next) => {
     } catch (error) {
         next(error)
     }
-
-    // try{
-    //     const existingActivity = await getActivityByName(name);
-    //     if (existingActivity) {
-    //         res.send({error: "Error",
-    //            message: `An activity with name ${name} already exists`,
-    //             name:"Error name",});
-    //     } else {
-    //         const newActivity = await createActivity(name, description);
-    //         res.send(newActivity);
-    //     }
-    // } catch(error) {
-    //     next(error)
-    // }
    
 })
 
-
-
 // PATCH /api/activities/:activityId
-activitiesRouter.patch('/:activityId', async (req, res, next)=>{
+activitiesRouter.patch('/:activityId', async (req, res)=>{
     const {activityId} = req.params;
     console.log(activityId)
     const {name, description} = req.body;

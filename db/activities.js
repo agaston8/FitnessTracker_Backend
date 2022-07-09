@@ -54,8 +54,8 @@ async function getActivityByName(name) {
 
 }
 
-async function attachActivitiesToRoutines(routines) {
-}
+// async function attachActivitiesToRoutines(routines) {
+// }
 
 // select and return an array of all activities
 async function createActivity({ name, description }) {
@@ -79,7 +79,7 @@ async function createActivity({ name, description }) {
 
 // return the new activity
 async function updateActivity({ id, ...fields }) {
- // console.log("these are the fields", {id, ...fields})
+
   const field= {...fields};
   let fieldItem =[];
   console.log(field)
@@ -115,7 +115,7 @@ module.exports = {
   getAllActivities,
   getActivityById,
   getActivityByName,
-  attachActivitiesToRoutines,
+  //attachActivitiesToRoutines,
   createActivity,
   updateActivity,
 }

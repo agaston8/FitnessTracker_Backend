@@ -117,7 +117,6 @@ userRouter.get('/me', async (req, res) => {
 });
 
 // GET /api/users/:username/routines
-//needs token
 userRouter.get('/:username/routines', async (req, res, next) => {
     const {username}= req.params
     try {
