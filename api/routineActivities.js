@@ -4,11 +4,11 @@ const {
     updateRoutineActivity,
     destroyRoutineActivity,
     canEditRoutineActivity,
+    getUserById
 } = require("../db")
 const jwt = require('jsonwebtoken')
 
 // PATCH /api/routine_activities/:routineActivityId
-
 routineActivitiesRouter.patch("/:routineActivityId", async (req, res, next)=>{
     const {routineActivityId} = req.params;
     const {count, duration} = req.body;
@@ -42,13 +42,24 @@ routineActivitiesRouter.patch("/:routineActivityId", async (req, res, next)=>{
 // DELETE /api/routine_activities/:routineActivityId
 routineActivitiesRouter.delete("/:routineActivityId", async (req, res, next)=>{
     const {routineActivityId} = req.params;
-   
-    
-    try{
-        
+    const prefix = 'Bearer ';
+    const auth = req.header('Authorization');
+    const token = auth.slice(prefix.length);
+     const loggedInUser = jwt.verify(token, process.env.JWT_SECRET);
+     //console.log(validUser)
+      
+    try {
+        const theUserCanEdit = await canEditRoutineActivity(routineActivityId, loggedInUser.id)
+        if (theUserCanEdit == true) {
             const deletedRoutine = await destroyRoutineActivity(routineActivityId);
             res.send(deletedRoutine);
-        
+        } else {
+            res.status(403).send({
+                message:`User ${loggedInUser.username} is not allowed to delete In the afternoon`,
+                name:"error",
+                error:"error"
+            })
+        }
      } catch(error) {
          console.error(error);
      }
