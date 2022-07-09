@@ -7,7 +7,7 @@ const {
     createUser,
     getUser
 } = require('../db');
-const jwt = require('jsonwebtoken')
+const jwt = require('../node_modules/jsonwebtoken');
 const secret = process.env.JWT_SECRET;
 
 
@@ -34,10 +34,10 @@ userRouter.post('/login', async (req, res, next) => {
                 name: 'IncorrectCredentialsError'
               });
         } else {
-            console.log("!!!", user)
+            //console.log("!!!", user)
             const token = jwt.sign({username: user.username, id: user.id}, secret);
-            console.log("!TOKEN", token)
-            console.log(user)
+            //console.log("!TOKEN", token)
+           // console.log(user)
             res.send({ 
               message: "you're logged in!",
               token: token,
@@ -92,24 +92,41 @@ userRouter.post('/register', async (req, res, next) => {
 
 // GET /api/users/me
 userRouter.get('/me', async (req, res, next) => {
-   
+    
+    const prefix = 'Bearer ';
+    const auth = req.header('Authorization');
+  
+    try {
+        if (!auth) {
+            res.status(401).send({
+                message:"You must be logged in to perform this action",
+                name:"error",
+                error:"error"
+            })
+        } else if (auth.startsWith(prefix)) {
+            const token = auth.slice(prefix.length);
+            const { id } = jwt.verify(token, process.env.JWT_SECRET);
+          
+           req.user = await getUserById(id);
+
+           res.send(req.user)
+        } 
+    } catch (error) {
+        console.error(error)
+    }
 
 });
 
 // GET /api/users/:username/routines
 //needs token
 userRouter.get('/:username/routines', async (req, res, next) => {
-    const {username} = req.params;
-    //console.log("HEY", username)
-    try{
-        const routines = await getPublicRoutinesByUser(username)
-        //console.log("LOOK HERE", routines)
-        res.send(routines)
-
-    } catch(error) {
-        console.error(error);
+    const {username}= req.params
+    try {
+        const routines = await getPublicRoutinesByUser({username: username});
+        res.send(routines);
+    } catch (error) {
+        next(error)
     }
-
-})
+});
 
 module.exports = userRouter;
