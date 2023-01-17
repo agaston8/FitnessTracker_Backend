@@ -5,7 +5,6 @@ const app = express();
 
 app.use(cors());
 
-
 // GET /api/health
 router.get('/health', async (req, res) => {
     res.send({message: "the server is up and running!"})

@@ -32,10 +32,14 @@ async function getUser({ username, password }) {
   try {
     const user = await getUserByUsername(username);
     //console.log("LOOOOK", user)
-    if (!user) {return;}
+    if (!user) {
+      return;
+    }
     const hashedPassword = user.password;
     const passwordMatch = await bcrypt.compare(password, hashedPassword);
-    if (!passwordMatch) {return;}
+    if (!passwordMatch) {
+      return;
+    }
     delete user.password;
     //console.log("LOOK", user)
     return user;
