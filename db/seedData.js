@@ -65,7 +65,7 @@ async function createTables() {
           id SERIAL PRIMARY KEY,
           name VARCHAR(255) UNIQUE NOT NULL, 
           description TEXT NOT NULL
-        );
+        );/
         CREATE TABLE routines (
           id SERIAL PRIMARY KEY,
           "creatorId" INTEGER REFERENCES users(id),

@@ -8,7 +8,7 @@ const {
 const jwt = require('jsonwebtoken')
 
 // PATCH /api/routine_activities/:routineActivityId
-routineActivitiesRouter.patch("/:routineActivityId", async (req, res, next)=>{
+routineActivitiesRouter.patch("/:routineActivityId", async (req, res)=>{
     const {routineActivityId} = req.params;
     const {count, duration} = req.body;
     const prefix = 'Bearer ';
@@ -35,7 +35,7 @@ routineActivitiesRouter.patch("/:routineActivityId", async (req, res, next)=>{
 })
 
 // DELETE /api/routine_activities/:routineActivityId
-routineActivitiesRouter.delete("/:routineActivityId", async (req, res, next)=>{
+routineActivitiesRouter.delete("/:routineActivityId", async (req, res)=>{
     const {routineActivityId} = req.params;
     const prefix = 'Bearer ';
     const auth = req.header('Authorization');
