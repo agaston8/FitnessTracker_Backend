@@ -78,9 +78,9 @@ activitiesRouter.patch('/:activityId', async (req, res)=>{
 
     try{
         const existingActivity = await getActivityById(activityId);
-        console.log(existingActivity)
+        //console.log(existingActivity)
         const activityWithName = await getActivityByName(name);
-        console.log(activityWithName)
+        //console.log(activityWithName)
         if(!existingActivity){
             res.send({
                 name:"Error",
@@ -94,10 +94,8 @@ activitiesRouter.patch('/:activityId', async (req, res)=>{
                 error:"Error"
             })
         } else {
-            console.log('here')
-            console.log(name)
             const updatedActivity = await updateActivity({id: activityId, name:name, description:description});
-            console.log("updatedactivity", updatedActivity)
+            //console.log("updatedactivity", updatedActivity)
             res.send(updatedActivity);
             
         }
