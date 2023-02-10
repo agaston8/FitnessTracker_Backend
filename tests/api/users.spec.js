@@ -1,8 +1,4 @@
-/* 
 
-DO NOT CHANGE THIS FILE
-
-*/
 require("dotenv").config()
 const request = require("supertest")
 const faker = require("faker")

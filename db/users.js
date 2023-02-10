@@ -31,7 +31,7 @@ async function createUser({ username, password }) {
 async function getUser({ username, password }) {
   try {
     const user = await getUserByUsername(username);
-    //console.log("LOOOOK", user)
+    //console.log(user)
     if (!user) {
       return;
     }
@@ -41,7 +41,7 @@ async function getUser({ username, password }) {
       return;
     }
     delete user.password;
-    //console.log("LOOK", user)
+    //console.log(user)
     return user;
     } catch (error) {
     console.error(error);
@@ -59,7 +59,7 @@ async function getUserById(userId) {
 
     delete user.password;
 
-    //console.log("this is a user got from userID-password", user)
+    //console.log(user)
     return user
 
 

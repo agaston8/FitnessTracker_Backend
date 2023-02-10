@@ -93,7 +93,6 @@ routinesRouter.delete('/:routineId', async (req, res)=>{
           try{  
             if (loggedInUser.id === routine.creatorId) {
                 res.send(routine)
-                //const deletedRoutine = 
                 await destroyRoutine(routineId);
                 //console.log("THIS SOULD BE DELETED", deletedRoutine)
                 //res.send(deletedRoutine)

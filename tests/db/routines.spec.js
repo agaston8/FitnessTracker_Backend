@@ -1,8 +1,4 @@
-/* 
 
-DO NOT CHANGE THIS FILE
-
-*/
 require("dotenv").config();
 const faker = require("faker");
 const client = require("../../db/client");
