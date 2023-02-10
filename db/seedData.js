@@ -64,8 +64,9 @@ async function createTables() {
         CREATE TABLE activities (
           id SERIAL PRIMARY KEY,
           name VARCHAR(255) UNIQUE NOT NULL, 
-          description TEXT NOT NULL
-        );/
+          description TEXT NOT NULL,
+          image VARCHAR(255)
+        );
         CREATE TABLE routines (
           id SERIAL PRIMARY KEY,
           "creatorId" INTEGER REFERENCES users(id),
