@@ -1,37 +1,12 @@
-// require in the database adapter functions as you write them (createUser, createActivity...)
-// const { } = require('./');
-// const client = require("./client")
-// const { createUser } = require("./users.js")
-// const {createActivity, getAllActivities} = require("./activities")
-// const {createRoutine, getRoutinesWithoutActivities} = require("./routines")
-// const {addActivityToRoutine} = require("./routine_activities")
+
 const {
   client,
   getAllActivities,
-  // getActivityById,
-  // getActivityByName,
   createActivity,
-  // updateActivity,
-  // getRoutineActivityById,
   addActivityToRoutine,
-  // getRoutineActivitiesByRoutine,
-  // updateRoutineActivity,
-  // destroyRoutineActivity,
-  // canEditRoutineActivity,
-  // getRoutineById,
   getRoutinesWithoutActivities,
-  // getAllRoutines,
-  // getAllPublicRoutines,
-  // getAllRoutinesByUser,
-  // getPublicRoutinesByUser,
-  // getPublicRoutinesByActivity,
   createRoutine,
-  // updateRoutine,
-  // destroyRoutine,
   createUser,
-  // getUser,
-  // getUserById,
-  // getUserByUsername,
 } = require("./")
 
 async function dropTables() {
@@ -93,7 +68,7 @@ async function createTables() {
 }
 
 /* 
-DO NOT CHANGE ANYTHING BELOW. This is default seed data, and will help you start testing, before getting to the tests. 
+DO NOT CHANGE ANYTHING BELOW. This is default seed data for testing. 
 */
 
 async function createInitialUsers() {
