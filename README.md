@@ -1,4 +1,4 @@
-# fitnesstracker
+# Fitness Tracker
 
 an API and database for our new fitness tracking application, FitnessTracker, using node, express, and postgresql
 
