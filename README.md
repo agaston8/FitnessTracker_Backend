@@ -18,6 +18,10 @@ Run Seed Script
 
 ## Automated Tests
 
+***For all tests to pass you need the JWT secret key. Create a new file called .env and add this to the 1st line:
+
+JWT_SECRET = fitnesstrackrsecret
+
 To run all the tests in watch mode (re-runs on code update), run
 
     npm run test:watch
