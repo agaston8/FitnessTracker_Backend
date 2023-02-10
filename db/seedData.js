@@ -23,8 +23,8 @@ async function dropTables() {
     console.error("Error dropping tables")
     throw error;
   }
-  // drop all tables, in the correct order
 }
+
 
 async function createTables() {
   console.log("Starting to create tables...")
@@ -40,7 +40,6 @@ async function createTables() {
           id SERIAL PRIMARY KEY,
           name VARCHAR(255) UNIQUE NOT NULL, 
           description TEXT NOT NULL,
-          image VARCHAR(255)
         );
         CREATE TABLE routines (
           id SERIAL PRIMARY KEY,
@@ -59,6 +58,8 @@ async function createTables() {
         );
     `) 
     //assume privacy for the user all the time, put isPublic to false 
+    
+    //took images out of git repo to maintain passing test suites add back in for front end developement
 
       console.log('Finished creating tables...')
   } catch(error){
